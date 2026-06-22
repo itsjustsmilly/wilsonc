@@ -5,7 +5,6 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://itsjustsmilly.github.io',
-	base: '/wilsonc',
+	site: 'https://wilsonc.dev',
 	integrations: [mdx(), sitemap()],
 });
