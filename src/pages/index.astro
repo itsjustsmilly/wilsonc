@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <p class="hero-label mono">Engineer · Student · Writer</p>
+      <h1 id="hero-heading">Hi, I'm <span class="accent">Wilson C.</span></h1>
+      <p class="tagline">
+        I build, learn, and write across engineering, technology, and the wider world.
+        Here, I'll document some of the projects I've gone through, my journey throughout
+        university and industry, and delve into some of my hot takes across a variety of subjects.
+      </p>
+    </section>
+
+    <div class="divider-rule"></div>
+
+    <!-- Two main sections -->
+    <section class="sections" aria-label="Site sections">
+
+      <a href="/projects" class="section-entry">
+        <div class="entry-left">
+          <span class="entry-label mono">01 — Projects</span>
+          <h2 class="entry-title">Things I've built</h2>
+          <p class="entry-desc">Hardware, software, and whatever else I've been tinkering with. Click to have a peek.</p>
+        </div>
+        <span class="entry-arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="/essays" class="section-entry">
+        <div class="entry-left">
+          <span class="entry-label mono">02 — Essays</span>
+          <h2 class="entry-title">Things I think about</h2>
+          <p class="entry-desc">Writing on engineering, AI, and the odd bit of politics — plus honest takes on education, study, and what it's like learning and teaching at the same time.</p>
+        </div>
+        <span class="entry-arrow" aria-hidden="true">→</span>
+      </a>
+
+    </section>
+
+    <div class="divider-rule"></div>
+
+    <!-- Contact block -->
+    <section class="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Get in touch</h2>
+      <p>Always happy to chat about projects, ideas, or collaboration.</p>
+      <nav aria-label="Contact links" class="contact-links">
+        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-16) var(--space-12);
+  }
+  .hero-label {
+    color: var(--accent);
+    margin-bottom: var(--space-4);
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, var(--text-4xl));
+    margin-bottom: var(--space-6);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .accent { color: var(--accent); }
+  .tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .divider-rule {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin-block: var(--space-12);
+  }
+
+  /* Section entries */
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .section-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-8) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color var(--transition);
+    position: relative;
+  }
+  .section-entry:first-child {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .section-entry:hover .entry-title { color: var(--accent); }
+  .section-entry:hover .entry-arrow { color: var(--accent); transform: translateX(4px); }
+  .section-entry:hover { opacity: 1; }
+
+  .entry-left { flex: 1; }
+
+  .entry-label {
+    display: block;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .entry-title {
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-2);
+    font-weight: 600;
+    transition: color var(--transition);
+  }
+
+  .entry-desc {
+    color: var(--color-text-muted);
+    margin: 0;
+    font-size: var(--text-base);
+    max-width: 50ch;
+    line-height: 1.55;
+  }
+
+  .entry-arrow {
+    font-size: var(--text-xl);
+    color: var(--color-border);
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+  }
+
+  /* Contact */
+  .contact h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+  .contact p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-base);
+  }
+  .contact-links {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .contact-links a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: color var(--transition), border-color var(--transition);
+    border-radius: var(--radius);
+  }
+  .contact-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding-block: var(--space-12) var(--space-8); }
+    .section-entry { padding: var(--space-6) 0; }
+    .entry-arrow { display: none; }
+  }
+</style>

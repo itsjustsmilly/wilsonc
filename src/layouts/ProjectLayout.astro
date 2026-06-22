@@ -1,0 +1,165 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  tags: string[];
+  image?: string;
+  imageAlt?: string;
+  demoUrl?: string;
+  repoUrl?: string;
+}
+
+const { title, description, tags, image, imageAlt, demoUrl, repoUrl } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container">
+
+    <p class="back"><a href="/projects">← Projects</a></p>
+
+    <header class="project-header">
+      <h1>{title}</h1>
+      <p class="description">{description}</p>
+
+      <div class="meta">
+        {tags.length > 0 && (
+          <ul class="tags" aria-label="Tags">
+            {tags.map(t => <li><span class="tag">{t}</span></li>)}
+          </ul>
+        )}
+        <div class="links">
+          {demoUrl && <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="link-btn">Live demo ↗</a>}
+          {repoUrl && <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="link-btn link-btn--ghost">Source ↗</a>}
+        </div>
+      </div>
+    </header>
+
+    {image && (
+      <div class="hero-image">
+        <img src={image} alt={imageAlt ?? title} />
+      </div>
+    )}
+
+    <div class="orange-rule"></div>
+
+    <div class="prose project-body">
+      <slot />
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .back {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-8);
+    display: block;
+  }
+  .back a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .back a:hover { color: var(--accent); opacity: 1; }
+
+  .project-header { margin-bottom: var(--space-8); }
+
+  h1 {
+    font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
+    margin-bottom: var(--space-4);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  .description {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin: 0 0 var(--space-6);
+    line-height: 1.55;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .tags {
+    display: flex;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .links { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+  .link-btn {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    text-decoration: none;
+    background: var(--accent);
+    color: #fff;
+    transition: opacity var(--transition);
+  }
+  .link-btn--ghost {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+  .link-btn:hover { opacity: 0.8; }
+
+  .hero-image {
+    margin-bottom: var(--space-8);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .orange-rule {
+    width: 2.5rem;
+    height: 2px;
+    background: var(--accent);
+    margin-block: var(--space-8);
+  }
+
+  /* Section headings get orange left accent */
+  .project-body :global(h2) {
+    font-size: var(--text-lg);
+    margin-top: var(--space-12);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .project-body :global(h2:first-child) { margin-top: 0; }
+
+  .project-body :global(img) {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    margin-block: var(--space-6);
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: var(--text-2xl); }
+  }
+</style>

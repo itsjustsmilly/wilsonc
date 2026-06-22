@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(which node *)",
+      "Bash(ls /usr/local/bin/ | grep -E \"node|npm|bun|pnpm\" 2>/dev/null; ls ~/.nvm/versions/node 2>/dev/null | head -5; ls ~/.volta/bin 2>/dev/null | head -5; ls /opt/homebrew/bin/ 2>/dev/null | grep -E \"node|npm\")",
+      "Bash(find /Users/smilson -name \"node\" -type f 2>/dev/null | head -5; find /usr -name \"node\" -type f 2>/dev/null | head -5)",
+      "Bash(chmod +x \"/Users/smilson/Documents/Personal Website/.claude/dev.sh\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(mv \"/Users/smilson/Documents/Personal Website/src/pages/projects/_/[...slug].astro\" \"/Users/smilson/Documents/Personal Website/src/pages/projects/[...slug].astro\" && rmdir \"/Users/smilson/Documents/Personal Website/src/pages/projects/_\" && ls \"/Users/smilson/Documents/Personal Website/src/pages/projects/\")",
+      "Read(//private/tmp/**)",
+      "Bash(unzip -o \"/Users/smilson/Downloads/675538be-334f-493b-ab50-f509eae8d882_ExportBlock-c779baea-05b5-4489-851d-f79374fc5931.zip\")",
+      "Bash(unzip -o \"ExportBlock-c779baea-05b5-4489-851d-f79374fc5931-Part-1.zip\" -d essay_export)",
+      "Bash(cp '/tmp/essay_export/Private & Shared/Chasing a Moving Target Why AI Education will alwa/image.png' '/Users/smilson/Documents/Personal Website/public/images/essays/chasing-a-moving-target/desk-setup.png')",
+      "Bash(cp '/tmp/essay_export/Private & Shared/Chasing a Moving Target Why AI Education will alwa/CleanShot_2026-06-21_at_00.11.23.png' '/Users/smilson/Documents/Personal Website/public/images/essays/chasing-a-moving-target/ai-iceberg.png')"
+    ]
+  }
+}

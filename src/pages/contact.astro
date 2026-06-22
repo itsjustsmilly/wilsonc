@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SOCIAL_LINKS } from '../consts';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Wilson C."
+>
+  <div class="container">
+    <h1>Contact</h1>
+
+    <div class="prose">
+      <p>
+        Hi. I see you're interested in getting to know me — glad you're here.
+        The best way to reach me is by email:
+        <a href={`mailto:${SOCIAL_LINKS.email}`}>{SOCIAL_LINKS.email}</a>.
+      </p>
+      <p>
+        If you're interested in working together on a project, research, or anything else,
+        feel free to email me and ask for my CV. I'm always open to collaborating on
+        interesting problems across engineering, technology, and beyond.
+      </p>
+      <p>
+        You can also find me on
+        <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        or browse my work on
+        <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  h1 { margin-bottom: var(--space-8); }
+</style>

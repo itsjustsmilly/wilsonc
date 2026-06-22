@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const essays = (await getCollection('essays', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Essays"
+  description="Writing on engineering, AI, economics, education, and the way technology reshapes society."
+>
+  <div class="container">
+    <header class="page-header">
+      <h1>Essays</h1>
+      <p class="subtitle">
+        Writing on engineering, AI, and the odd bit of politics — plus honest takes on education, study, and what it's like learning and teaching at the same time.
+      </p>
+    </header>
+
+    {essays.length === 0 ? (
+      <p class="empty">No essays yet — check back soon.</p>
+    ) : (
+      <ul role="list" class="essay-list" aria-label="Essays">
+        {essays.map(essay => (
+          <li>
+            <ArticleCard
+              title={essay.data.title}
+              date={essay.data.date}
+              description={essay.data.description}
+              tags={essay.data.tags}
+              href={`/essays/${essay.id}`}
+            />
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header { margin-bottom: var(--space-8); }
+  .page-header h1 { margin-bottom: var(--space-3); }
+  .subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 52ch;
+  }
+  .essay-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .empty { color: var(--color-text-muted); }
+</style>

@@ -1,0 +1,97 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  href: string;
+}
+
+const { title, date, description, tags, href } = Astro.props;
+
+const formatted = date.toLocaleDateString('en-AU', {
+  year: 'numeric', month: 'short', day: 'numeric',
+});
+---
+
+<article class="article-card">
+  <div class="meta">
+    <time class="mono" datetime={date.toISOString()}>{formatted}</time>
+    {tags.length > 0 && (
+      <ul class="tags" aria-label="Tags">
+        {tags.map(t => <li><span class="tag">{t}</span></li>)}
+      </ul>
+    )}
+  </div>
+  <h2 class="title"><a href={href}>{title}</a></h2>
+  <p class="desc">{description}</p>
+  <span class="read-more" aria-hidden="true">Read →</span>
+</article>
+
+<style>
+  .article-card {
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--color-border-subtle);
+    position: relative;
+  }
+  .article-card:first-child {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+  }
+
+  time {
+    color: var(--color-text-muted);
+  }
+
+  .tags {
+    display: flex;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: 0 0 var(--space-2);
+    letter-spacing: -0.01em;
+  }
+  .title a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .title a:hover {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .desc {
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+    max-width: 60ch;
+    line-height: 1.6;
+    font-size: var(--text-base);
+  }
+
+  .read-more {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color var(--transition);
+  }
+  .article-card:hover .read-more {
+    color: var(--accent);
+  }
+</style>
