@@ -11,6 +11,12 @@
         "/Users/smilson/Documents/Personal Website"
       ],
       "port": 4321
+    },
+    {
+      "name": "vce-exam-generator",
+      "runtimeExecutable": "/Users/smilson/Documents/vce_exam_generator/.venv/bin/python",
+      "runtimeArgs": ["/Users/smilson/Documents/vce_exam_generator/app.py"],
+      "port": 5057
     }
   ]
 }
