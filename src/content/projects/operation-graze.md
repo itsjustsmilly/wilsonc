@@ -10,9 +10,9 @@ role: "Mechanical & Structures Lead"
 team: "Monash Automation"
 system: "24 V tracked skid-steer base, roof-mounted solar"
 tools: ["CAD", "3D printing", "Fabrication", "Simulation"]
-image: "/images/projects/operation-graze/graze-rover.jpg"
-imageAlt: "Operation GRAZE rover with its solar panel and tracked base"
-imageCaption: "The assembled prototype. The supplement trailer is outside this frame."
+image: "/images/projects/operation-graze/graze-cad.png"
+imageAlt: "Latest CAD model of the GRAZE rover: tracked base, electronics enclosure, tow ball and roof-mounted solar panel"
+imageCaption: "The latest CAD model: tracked base, enclosure, tow hitch and roof-mounted solar panel."
 draft: false
 ---
 
@@ -21,6 +21,8 @@ draft: false
 Moving supplementary feed with a herd during rotational grazing takes a person, a vehicle and repeated trips across a property. Our team set out to test whether a small autonomous rover could take on the transport part of that job. GRAZE is a student-built proof of concept, not a finished farm product: it needs to tow a trailer, follow a route and stop safely before the broader question of farm deployment can be answered.
 
 The rover uses a tracked, skid-steer base, a 24 V electrical system and a roof-mounted solar panel. Its two tracks are driven independently. The team has demonstrated a programmed loop between GPS waypoints while towing a trailer. The project remains in development, with performance on changing terrain and longer-term reliability still to be tested.
+
+![Operation GRAZE rover with its solar panel and tracked base](/images/projects/operation-graze/graze-rover.jpg "The assembled prototype. The supplement trailer is outside this frame.")
 
 ## My part of the project
 
@@ -49,6 +51,12 @@ The waypoint demonstration showed that the rover can follow a programmed GPS loo
 Integration tests also exposed a thermal mistake. During reassembly, a motor-controller heatsink was inadvertently left off. A subsequent test produced local melting where the MOSFETs contacted the plastic enclosure. It was a reminder that an electrical component's mechanical assembly is part of its operating requirements, especially inside a compact enclosure.
 
 ![Electronics enclosure open during integration](/images/projects/operation-graze/graze-electronics.jpg "The enclosure during integration. Packaging, mounting and heat management all had to work around the available chassis space.")
+
+## Working with industry
+
+We didn't design GRAZE in isolation. Over the project we met with several industry partners, including KUKA, Optiway and Woolworths Agriculture, and put our design in front of people who build and buy this kind of equipment. Their feedback changed the design: it pointed out where our assumptions were weak and helped us understand what the market actually needs from a machine like this.
+
+We also visited KUKA on site to see how their autonomous mobile robots (AMRs) combine camera and lidar data to make decisions. That visit gave us a practical direction for our own sensing: how to retune our RealSense cameras so they keep working under the vibration a tracked rover produces on rough ground.
 
 ## What I learned
 

@@ -297,6 +297,7 @@ hr { border: 0; border-top: var(--hair); margin: var(--s7) 0; }
 [data-theme='dark'] .fig img,
 [data-theme='dark'] .media img { filter: brightness(0.9); }
 
+
 /* ─── 7. Prose (essays + project write-ups) ───────────────────────────────── */
 .prose {
   font-size: var(--fs-read);
