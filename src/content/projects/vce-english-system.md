@@ -1,10 +1,18 @@
 ---
 title: "Refined VCE English System"
 description: "An AI-powered exam generator and essay marking platform built for my VCE English students, encoding my actual tutoring rubric into a 20-criterion, 100-point marking pipeline."
+number: 2
+year: 2026
+category: "Software / Education"
+status: "Live"
 tags: ["AI", "Flask", "LLM Agents", "Python"]
+role: "Solo build: rubric, pipeline, deployment"
+system: "Flask app, multi-step LLM pipeline, 20-criterion rubric"
+tools: ["Python", "Flask", "LLM APIs", "Linux server"]
 image: "/images/projects/vce-english-system/interface-overview.png"
 imageAlt: "VCE English System interface overview"
-order: 5
+imageCaption: "The student-facing interface."
+demoUrl: "https://essaylenswc.org"
 draft: false
 ---
 

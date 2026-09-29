@@ -1,10 +1,18 @@
 ---
 title: "Project Title"
-description: "One sentence shown on the portfolio card."
+description: "One sentence: what it is and why it exists."
+number: 4                      # next project number (P.04)
+year: 2026
+category: "Robotics / Mechanical"
+status: "Prototyping"          # Prototyping, Testing, Live, Ongoing, Shipped, Archived
 tags: ["Tag1", "Tag2"]
+role: "Your role"              # optional
+team: "Team name"              # optional
+system: "Key spec in one line" # optional
+tools: ["CAD", "Python"]       # optional
 image: "/images/projects/project-name/hero.jpg"
 imageAlt: "Description of the hero photo"
-order: 99
+imageCaption: "Caption shown as FIG.01"
 draft: true
 ---
 

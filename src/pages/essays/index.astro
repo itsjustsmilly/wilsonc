@@ -1,57 +1,39 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
+import PageHead from '../../components/PageHead.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import EssayEntry from '../../components/EssayEntry.astro';
+import { getEssays } from '../../lib/content';
 
-const essays = (await getCollection('essays', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const essays = await getEssays();
 ---
 
 <BaseLayout
-  title="Essays"
-  description="Writing on engineering, AI, economics, education, and the way technology reshapes society."
+  title="Writing"
+  description="Essays on AI, education, engineering and university, from an engineering student who also teaches."
 >
-  <div class="container">
-    <header class="page-header">
-      <h1>Essays</h1>
-      <p class="subtitle">
-        Writing on engineering, AI, and the odd bit of politics — plus honest takes on education, study, and what it's like learning and teaching at the same time.
-      </p>
-    </header>
+  <div class="sheet">
+    <PageHead
+      index="03"
+      label="Writing"
+      title="Writing"
+      lead="Essays on AI, education, engineering and what it is like to study and teach at the same time."
+    >
+      <span slot="margin" class="meta">{essays.length} essays</span>
+      <a slot="margin" class="go" href="/rss.xml">RSS <span class="arrow" aria-hidden="true">&#8594;</span></a>
+    </PageHead>
 
-    {essays.length === 0 ? (
-      <p class="empty">No essays yet — check back soon.</p>
-    ) : (
-      <ul role="list" class="essay-list" aria-label="Essays">
-        {essays.map(essay => (
-          <li>
-            <ArticleCard
-              title={essay.data.title}
-              date={essay.data.date}
-              description={essay.data.description}
-              tags={essay.data.tags}
-              href={`/essays/${essay.id}`}
-            />
-          </li>
-        ))}
-      </ul>
-    )}
+    <SectionHead index="03.1" label="Newest first" />
+    {essays.map(({ essay, n, minutes }) => (
+      <EssayEntry
+        href={`/essays/${essay.id}`}
+        n={n}
+        date={essay.data.date}
+        title={essay.data.title}
+        description={essay.data.description}
+        tags={essay.data.tags}
+        minutes={minutes}
+      />
+    ))}
   </div>
 </BaseLayout>
-
-<style>
-  .page-header { margin-bottom: var(--space-8); }
-  .page-header h1 { margin-bottom: var(--space-3); }
-  .subtitle {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin: 0;
-    max-width: 52ch;
-  }
-  .essay-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .empty { color: var(--color-text-muted); }
-</style>

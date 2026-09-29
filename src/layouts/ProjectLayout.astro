@@ -1,165 +1,186 @@
 ---
+// Project page: reads like an engineering case study, not a marketing page.
+import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
+import { revision } from '../lib/git';
 
 interface Props {
-  title: string;
-  description: string;
-  tags: string[];
-  image?: string;
-  imageAlt?: string;
-  demoUrl?: string;
-  repoUrl?: string;
+  data: {
+    title: string;
+    description: string;
+    number: number;
+    year: number;
+    category: string;
+    status: string;
+    tags: string[];
+    role?: string;
+    team?: string;
+    system?: string;
+    tools: string[];
+    image?: string;
+    imageAlt?: string;
+    imageCaption?: string;
+    demoUrl?: string;
+    repoUrl?: string;
+  };
+  headings: MarkdownHeading[];
+  filePath?: string;
 }
 
-const { title, description, tags, image, imageAlt, demoUrl, repoUrl } = Astro.props;
+const { data, headings, filePath } = Astro.props;
+const { rev, updated } = revision(filePath);
+const num = String(data.number).padStart(2, '0');
+const sections = headings.filter((h) => h.depth === 2);
+
+const specs = [
+  ['Role', data.role],
+  ['Status', data.status],
+  ['Team', data.team],
+  ['System', data.system],
+  ['Tools', data.tools.join(' / ')],
+  ['Field', data.category],
+].filter(([, v]) => v) as [string, string][];
 ---
 
-<BaseLayout title={title} description={description}>
-  <div class="container">
+<BaseLayout title={data.title} description={data.description} image={data.image}>
+  <article class="sheet">
 
-    <p class="back"><a href="/projects">← Projects</a></p>
+    <header class="row head">
+      <div class="m">
+        <a class="go back" href="/projects"><span class="arrow" aria-hidden="true">&#8592;</span> Work</a>
+        <span class="meta meta--accent">Project {num}</span>
+        <span class="meta meta--ink">{data.year}</span>
+        <span class="meta">{rev} / {updated}</span>
+      </div>
+      <div class="b">
+        <h1>{data.title}</h1>
+        <p class="dek">{data.description}</p>
 
-    <header class="project-header">
-      <h1>{title}</h1>
-      <p class="description">{description}</p>
-
-      <div class="meta">
-        {tags.length > 0 && (
-          <ul class="tags" aria-label="Tags">
-            {tags.map(t => <li><span class="tag">{t}</span></li>)}
-          </ul>
-        )}
-        <div class="links">
-          {demoUrl && <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="link-btn">Live demo ↗</a>}
-          {repoUrl && <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="link-btn link-btn--ghost">Source ↗</a>}
-        </div>
+        <dl class="spec specs">
+          {specs.map(([k, v]) => (
+            <>
+              <dt class="meta">{k}</dt>
+              <dd>{v}</dd>
+            </>
+          ))}
+          {(data.demoUrl || data.repoUrl) && (
+            <>
+              <dt class="meta">Links</dt>
+              <dd class="links">
+                {data.demoUrl && <a href={data.demoUrl} target="_blank" rel="noopener noreferrer">{new URL(data.demoUrl).host} &#8599;</a>}
+                {data.repoUrl && <a href={data.repoUrl} target="_blank" rel="noopener noreferrer">Source &#8599;</a>}
+              </dd>
+            </>
+          )}
+        </dl>
       </div>
     </header>
 
-    {image && (
-      <div class="hero-image">
-        <img src={image} alt={imageAlt ?? title} />
+    {data.image && (
+      <div class="row cover">
+        <div class="m">
+          <span class="fig-label">FIG.01</span>
+          {data.imageCaption && <p class="cap">{data.imageCaption}</p>}
+        </div>
+        <div class="b">
+          <figure class="fig media">
+            <img src={data.image} alt={data.imageAlt ?? data.title} />
+            <figcaption class="cap-mobile">
+              <span class="fig-label">FIG.01</span>
+              {data.imageCaption && <span class="fig-text">{data.imageCaption}</span>}
+              <span class="fig-dims" aria-hidden="true"></span>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     )}
 
-    <div class="orange-rule"></div>
-
-    <div class="prose project-body">
-      <slot />
+    <div class="row body">
+      <div class="m">
+        {sections.length > 1 && (
+          <nav class="toc" aria-label="Sections">
+            <p class="meta meta--ink">Contents</p>
+            <ol>
+              {sections.map((h, i) => (
+                <li><a href={`#${h.slug}`}><span class="meta">{String(i + 1).padStart(2, '0')}</span>{h.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )}
+      </div>
+      <div class="b prose">
+        <slot />
+      </div>
     </div>
 
-  </div>
+    <div class="row end">
+      <div class="m"><span class="meta">End of P.{num}</span></div>
+      <div class="b">
+        <a class="go" href="/projects"><span class="arrow" aria-hidden="true">&#8592;</span> Back to the project register</a>
+      </div>
+    </div>
+  </article>
 </BaseLayout>
 
 <style>
-  .back {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: var(--space-8);
-    display: block;
-  }
-  .back a {
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color var(--transition);
-  }
-  .back a:hover { color: var(--accent); opacity: 1; }
-
-  .project-header { margin-bottom: var(--space-8); }
+  .head > .m, .head > .b { padding-block: var(--s7) var(--s6); }
+  .back { margin-bottom: var(--s4); }
+  .back:hover .arrow { transform: translateX(-4px); }
 
   h1 {
-    font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
-    margin-bottom: var(--space-4);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    font-weight: 700;
+    font-size: var(--fs-display);
+    line-height: var(--lh-tight);
+    letter-spacing: -0.035em;
+    margin-bottom: var(--s4);
+    max-width: 16ch;
   }
+  .dek {
+    font-size: var(--fs-lead);
+    color: var(--ink-2);
+    max-width: 44ch;
+    margin-bottom: var(--s6);
+  }
+  .specs { max-width: 44rem; }
+  .links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
 
-  .description {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    max-width: 60ch;
-    margin: 0 0 var(--space-6);
-    line-height: 1.55;
-  }
+  /* Cover: caption lives in the margin like a drawing callout */
+  .cover > .m, .cover > .b { padding-block: 0 var(--s6); }
+  .cover .fig { margin: 0; }
+  .cover .m { justify-content: flex-end; }
+  .cap { margin: 0; font-size: var(--fs-small); line-height: 1.45; color: var(--muted); }
+  .cap-mobile { display: none; }
 
-  .meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
-    flex-wrap: wrap;
+  .body > .m { padding-top: var(--s6); }
+  .toc { position: sticky; top: 5rem; }
+  .toc ol { list-style: none; margin: var(--s3) 0 0; padding: 0; }
+  .toc li { margin: 0; }
+  .toc a {
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: 0.2rem;
+    padding-block: 0.3rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--muted);
+    border-top: var(--hair);
+    transition: color var(--t-fast) var(--ease);
   }
+  .toc a:hover { color: var(--accent); }
+  .toc a .meta { line-height: 1.8; }
+  .toc a:hover .meta { color: var(--accent); }
 
-  .tags {
-    display: flex;
-    gap: var(--space-2);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-wrap: wrap;
-  }
+  .end { border-top: var(--line); }
+  .end > .m, .end > .b { padding-block: var(--s4); }
 
-  .links { display: flex; gap: var(--space-3); flex-wrap: wrap; }
-
-  .link-btn {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-weight: 500;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius);
-    text-decoration: none;
-    background: var(--accent);
-    color: #fff;
-    transition: opacity var(--transition);
-  }
-  .link-btn--ghost {
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-  }
-  .link-btn:hover { opacity: 0.8; }
-
-  .hero-image {
-    margin-bottom: var(--space-8);
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-  }
-  .hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .orange-rule {
-    width: 2.5rem;
-    height: 2px;
-    background: var(--accent);
-    margin-block: var(--space-8);
-  }
-
-  /* Section headings get orange left accent */
-  .project-body :global(h2) {
-    font-size: var(--text-lg);
-    margin-top: var(--space-12);
-    padding-left: var(--space-4);
-    border-left: 2px solid var(--accent);
-    letter-spacing: -0.01em;
-  }
-  .project-body :global(h2:first-child) { margin-top: 0; }
-
-  .project-body :global(img) {
-    width: 100%;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    margin-block: var(--space-6);
-  }
-
-  @media (max-width: 640px) {
-    h1 { font-size: var(--text-2xl); }
+  @media (max-width: 760px) {
+    .head > .m { padding-block: var(--s5) 0; }
+    .head > .b { padding-block: var(--s3) var(--s5); }
+    .back { margin: 0; }
+    .cover > .m { display: none; }
+    .cap-mobile { display: flex; }
+    .cover .fig { margin-inline: calc(var(--gutter) * -1); }
+    .cover .fig img { border-inline: 0; border-radius: 0; }
+    .cover figcaption { padding-inline: var(--gutter); }
+    .body > .m { display: none; }
   }
 </style>

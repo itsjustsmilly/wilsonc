@@ -1,105 +1,121 @@
 ---
+// Essay page: calm, readable, with metadata and contents in the margin.
+import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
+import { longDate } from '../lib/format';
 
 interface Props {
   title: string;
   date: Date;
   description: string;
   tags: string[];
+  n: number;
+  minutes: number;
+  headings: MarkdownHeading[];
 }
 
-const { title, date, description, tags } = Astro.props;
-
-const formatted = date.toLocaleDateString('en-AU', {
-  year: 'numeric', month: 'long', day: 'numeric',
-});
+const { title, date, description, tags, n, minutes, headings } = Astro.props;
+const sections = headings.filter((h) => h.depth === 2 && h.slug !== 'references');
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="container">
-    <header class="article-header">
-      <p class="back"><a href="/essays">← All essays</a></p>
-      <div class="meta">
-        <time class="mono" datetime={date.toISOString()}>{formatted}</time>
-        {tags.length > 0 && (
-          <ul class="tags" aria-label="Tags">
-            {tags.map(t => <li><span class="tag">{t}</span></li>)}
-          </ul>
-        )}
+  <article class="sheet">
+    <header class="row head">
+      <div class="m">
+        <a class="go back" href="/essays"><span class="arrow" aria-hidden="true">&#8592;</span> Writing</a>
+        <span class="meta meta--accent">Essay {String(n).padStart(2, '0')}</span>
+        <time class="meta meta--ink" datetime={date.toISOString()}>{longDate(date)}</time>
+        <ul class="tags meta" aria-label="Topics">{tags.map((t) => <li>{t}</li>)}</ul>
+        <span class="meta">{minutes} min read</span>
       </div>
-      <h1>{title}</h1>
-      <p class="description">{description}</p>
+      <div class="b">
+        <h1>{title}</h1>
+        <p class="dek">{description}</p>
+      </div>
     </header>
 
-    <div class="orange-rule"></div>
-
-    <div class="prose">
-      <slot />
+    <div class="row body">
+      <div class="m">
+        {sections.length > 1 && (
+          <nav class="toc" aria-label="Sections">
+            <p class="meta meta--ink">Sections</p>
+            <ol>
+              {sections.map((h, i) => (
+                <li><a href={`#${h.slug}`}><span class="meta">{String(i + 1).padStart(2, '0')}</span>{h.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )}
+      </div>
+      <div class="b">
+        <div class="prose essay">
+          <slot />
+        </div>
+      </div>
     </div>
-  </div>
+
+    <div class="row end">
+      <div class="m"><span class="meta">End of E.{String(n).padStart(2, '0')}</span></div>
+      <div class="b">
+        <a class="go" href="/essays"><span class="arrow" aria-hidden="true">&#8592;</span> All writing</a>
+      </div>
+    </div>
+  </article>
 </BaseLayout>
 
 <style>
-  .article-header { margin-bottom: var(--space-8); }
-
-  .back {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: var(--space-8);
-    display: block;
-  }
-  .back a {
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color var(--transition);
-  }
-  .back a:hover { color: var(--accent); opacity: 1; }
-
-  .meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    flex-wrap: wrap;
-    margin-bottom: var(--space-4);
-  }
-
-  time { color: var(--color-text-muted); }
-
-  .tags {
-    display: flex;
-    gap: var(--space-2);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-wrap: wrap;
-  }
+  .head { border-bottom: var(--hair); }
+  .head > .m, .head > .b { padding-block: var(--s7) var(--s6); }
+  .back { margin-bottom: var(--s4); }
+  .back:hover .arrow { transform: translateX(-4px); }
+  .tags { flex-direction: column; }
+  .tags li + li::before { content: none; }
 
   h1 {
-    font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
-    margin-bottom: var(--space-4);
+    font-size: var(--fs-h1);
     line-height: 1.1;
     letter-spacing: -0.03em;
-    font-weight: 700;
+    max-width: 22ch;
+    margin-bottom: var(--s4);
   }
-
-  .description {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
+  .dek {
+    font-size: var(--fs-lead);
+    color: var(--ink-2);
+    max-width: 48ch;
     margin: 0;
-    max-width: 60ch;
-    line-height: 1.55;
   }
 
-  .orange-rule {
-    width: 2.5rem;
-    height: 2px;
-    background: var(--accent);
-    margin-block: var(--space-8);
-  }
+  .body > .m, .body > .b { padding-top: var(--s7); }
 
-  @media (max-width: 640px) {
-    h1 { font-size: var(--text-2xl); }
+  /* Essays: images stay inside the reading column */
+  .essay :global(.fig) { max-width: calc(var(--measure) + 4rem); }
+
+  .toc { position: sticky; top: 5rem; }
+  .toc ol { list-style: none; margin: var(--s3) 0 0; padding: 0; }
+  .toc a {
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: 0.2rem;
+    padding-block: 0.3rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--muted);
+    border-top: var(--hair);
+    transition: color var(--t-fast) var(--ease);
+  }
+  .toc a:hover, .toc a:hover .meta { color: var(--accent); }
+  .toc a .meta { line-height: 1.8; }
+
+  .end { border-top: var(--line); }
+  .end > .m, .end > .b { padding-block: var(--s4); }
+
+  @media (max-width: 760px) {
+    .head > .m { padding-block: var(--s5) 0; }
+    .head > .b { padding-block: var(--s4) var(--s5); }
+    .back { margin: 0; }
+    .tags { flex-direction: row; }
+    .tags li + li::before { content: '/'; }
+    .body > .m { display: none; }
+    .body > .b { padding-top: var(--s5); }
   }
 </style>

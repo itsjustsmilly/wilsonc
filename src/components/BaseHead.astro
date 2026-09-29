@@ -8,20 +8,23 @@ interface Props {
   image?: string;
 }
 
-const { title, description, image = '/images/og-default.png' } = Astro.props;
+const { title, description, image = '/images/projects/operation-graze/graze-rover.jpg' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const pageTitle = title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
+const pageTitle = title === SITE_TITLE ? `${SITE_TITLE} / Engineering notebook` : `${title} / ${SITE_TITLE}`;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
 <meta name="generator" content={Astro.generator} />
 <link rel="canonical" href={canonicalURL} />
+<meta name="theme-color" content="#F5F4F0" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
 
 <title>{pageTitle}</title>
 <meta name="description" content={description} />

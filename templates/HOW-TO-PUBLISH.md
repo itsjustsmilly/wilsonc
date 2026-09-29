@@ -131,7 +131,11 @@ description: "One sentence shown on the portfolio card."
 tags: ["Tag1", "Tag2"]
 image: "/images/projects/my-project-name/hero.jpg"
 imageAlt: "Brief description of what the hero photo shows"
-order: 1
+imageCaption: "Caption shown as FIG.01"
+number: 4
+year: 2026
+category: "Robotics / Mechanical"
+status: "Prototyping"
 draft: false
 ---
 ```
@@ -223,3 +227,12 @@ You can also just:
 2. Tell me the title, tags, and whether it's an article or project.
 3. Drop your images into the right folder.
 4. I'll write the `.md` file, fix the frontmatter, and place everything correctly.
+
+
+## Captions, figures and the bench (2026 redesign)
+
+- Images become numbered figures automatically. Add a caption as the image title:
+  `![alt text](/images/projects/x/photo.jpg "Caption shown under the figure")`
+- Status must be one of: Prototyping, Testing, Live, Ongoing, Shipped, Archived.
+- "On the bench" on the homepage is edited in `src/data/bench.yaml`.
+- Profile facts and the "Currently using" list live in `src/consts.ts`.

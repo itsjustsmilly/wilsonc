@@ -2,10 +2,12 @@
 export interface NavItem {
   label: string;
   href: string;
+  external?: boolean;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Essays', href: '/essays' },
+  { label: 'Work', href: '/projects' },
+  { label: 'Writing', href: '/essays' },
+  { label: 'About', href: '/about' },
+  { label: 'GitHub', href: 'https://github.com/itsjustsmilly', external: true },
 ];

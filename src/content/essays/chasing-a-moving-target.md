@@ -1,14 +1,14 @@
 ---
 title: "Chasing a Moving Target: Why AI Education Will Always Fall Behind Technology"
 date: 2026-06-20
-description: "AI is changing faster than schools and universities can write rules around it. The question is no longer whether students will use it — it's whether education will help them use it well."
+description: "AI is changing faster than schools and universities can write rules around it. The question is no longer whether students will use it. It's whether education will help them use it well."
 tags: ["AI", "Education"]
 draft: false
 ---
 
 I first encountered generative AI in Year 10 during a PE class in the gym.
 
-We were supposed to be preparing presentations on different forms of exercise. At some point, I pulled out a tool called WordHero on my laptop, which ran on an earlier generation of GPT — before ChatGPT had become a household name. Before schools had policies about AI. Before anyone had seriously thought it would reshape education.
+We were supposed to be preparing presentations on different forms of exercise. At some point, I pulled out a tool called WordHero on my laptop, which ran on an earlier generation of GPT, before ChatGPT had become a household name. Before schools had policies about AI. Before anyone had seriously thought it would reshape education.
 
 I remember typing in a basic prompt and watching paragraphs appear on the screen.
 
@@ -64,7 +64,7 @@ That is precisely the capability education should be building in students.
 
 ## AI is an iceberg, and most people are still near the surface
 
-![AI adoption as an iceberg — most people are still at the chatbot surface](/images/essays/chasing-a-moving-target/ai-iceberg.png)
+![AI adoption as an iceberg: most people are still at the chatbot surface](/images/essays/chasing-a-moving-target/ai-iceberg.png)
 
 I think of AI adoption as an iceberg.
 

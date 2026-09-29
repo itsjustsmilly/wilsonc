@@ -1,7 +1,7 @@
 ---
 title: "When the Future Changes Before You Arrive"
 date: 2026-07-25
-description: "AI is reshaping careers faster than students can graduate into them. But the question isn't whether our pathways will change — it's whether we understand our ambitions well enough to carry them through."
+description: "AI is reshaping careers faster than students can graduate into them. But the question isn't whether our pathways will change. It's whether we understand our ambitions well enough to carry them through."
 tags: ["AI", "Lifestyle"]
 draft: false
 ---

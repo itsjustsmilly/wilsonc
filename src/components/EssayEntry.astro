@@ -1,0 +1,71 @@
+---
+// Essay row in the writing index: date, number and tags in the margin.
+import { dotDate } from '../lib/format';
+
+interface Props {
+  href: string;
+  n: number;
+  date: Date;
+  title: string;
+  description: string;
+  tags: string[];
+  minutes: number;
+}
+const { href, n, date, title, description, tags, minutes } = Astro.props;
+---
+
+<a class="row row--tight essay" href={href}>
+  <div class="m">
+    <span class="meta meta--ink">{dotDate(date)}</span>
+    <span class="meta e-num">E.{String(n).padStart(2, '0')} &nbsp;/&nbsp; {minutes} min</span>
+  </div>
+  <div class="b">
+    <ul class="tags meta" aria-label="Topics">
+      {tags.map((t) => <li>{t}</li>)}
+    </ul>
+    <div class="line">
+      <div>
+        <h3>{title}</h3>
+        <p class="desc">{description}</p>
+      </div>
+      <span class="corner" aria-hidden="true">&#8599;</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .essay { color: inherit; }
+  .essay + :global(.essay) > .b,
+  .essay + :global(.essay) > .m { border-top: var(--hair); }
+
+  .tags { margin-bottom: var(--s2); }
+  .line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s5);
+    align-items: start;
+  }
+  h3 {
+    font-size: var(--fs-h2);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--s2);
+    max-width: 30ch;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .desc { margin: 0; max-width: 62ch; color: var(--ink-2); }
+
+  .corner {
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--rule-strong);
+    transition: color var(--t-fast) var(--ease), transform var(--t) var(--ease);
+  }
+  .e-num { transition: color var(--t-fast) var(--ease); }
+  .essay:hover h3, .essay:hover .e-num, .essay:hover .corner { color: var(--accent); }
+  .essay:hover .corner { transform: translate(3px, -3px); }
+
+  @media (max-width: 760px) {
+    .essay + :global(.essay) > .b { border-top: 0; }
+    .corner { display: none; }
+  }
+</style>

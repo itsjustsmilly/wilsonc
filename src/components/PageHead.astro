@@ -1,0 +1,43 @@
+---
+// Top-of-page block for index pages (Work, Writing, About).
+interface Props {
+  index: string;   // "02"
+  label: string;   // "Work"
+  title: string;
+  lead?: string;
+}
+const { index, label, title, lead } = Astro.props;
+---
+
+<div class="row page-head">
+  <div class="m">
+    <span class="meta meta--accent">{index} / {label}</span>
+    <slot name="margin" />
+  </div>
+  <div class="b">
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</div>
+
+<style>
+  .page-head > .m, .page-head > .b { padding-block: var(--s8) var(--s6); }
+  h1 {
+    font-size: var(--fs-display);
+    line-height: var(--lh-tight);
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    margin-bottom: var(--s4);
+  }
+  .lead {
+    font-size: var(--fs-lead);
+    color: var(--ink-2);
+    max-width: 46ch;
+    margin: 0;
+  }
+  @media (max-width: 760px) {
+    .page-head > .m { padding-block: var(--s6) 0; }
+    .page-head > .b { padding-block: var(--s3) var(--s5); }
+  }
+</style>

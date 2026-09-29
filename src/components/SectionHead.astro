@@ -1,0 +1,19 @@
+---
+// Full-width section rule with the section identifier in the margin: "01 / ON THE BENCH"
+interface Props {
+  index: string;           // "01"
+  label: string;           // "On the bench"
+  href?: string;           // optional "see all" link
+  linkLabel?: string;
+  id?: string;
+}
+const { index, label, href, linkLabel = 'All', id } = Astro.props;
+---
+
+<div class="row section-head" id={id}>
+  <div class="m"><span class="meta meta--accent">{index} /</span></div>
+  <div class="b">
+    <h2>{label}</h2>
+    {href && <a class="go" href={href}>{linkLabel} <span class="arrow" aria-hidden="true">&#8594;</span></a>}
+  </div>
+</div>

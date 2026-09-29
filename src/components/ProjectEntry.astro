@@ -1,0 +1,142 @@
+---
+// Editorial project entry. Layout alternates so the index never reads as a card grid:
+//   lead  - image across the full body, text in two columns beneath
+//   left  - image left (wide), text right (narrow)
+//   right - text left (narrow), image right (medium)
+// Images keep their natural aspect ratio.
+interface Props {
+  href: string;
+  number: number;
+  year: number;
+  title: string;
+  description: string;
+  category: string;
+  status: string;
+  role?: string;
+  image?: string;
+  imageAlt?: string;
+  variant: 'lead' | 'left' | 'right';
+}
+const { href, number, year, title, description, category, status, role, image, imageAlt, variant } = Astro.props;
+const num = String(number).padStart(2, '0');
+---
+
+<a class="row project" href={href} data-variant={variant}>
+  <div class="m">
+    <span class="p-num">P.{num}</span>
+    <span class="meta">{year}</span>
+    <span class="meta status">{status}</span>
+  </div>
+
+  <div class="b">
+    <div class="layout">
+      <figure class="media">
+        {image ? (
+          <img src={image} alt={imageAlt ?? title} loading="lazy" decoding="async" />
+        ) : (
+          <div class="placeholder meta">Image to come</div>
+        )}
+        <figcaption class="meta"><span class="fig-dims" aria-hidden="true"></span></figcaption>
+      </figure>
+
+      <div class="text">
+        <p class="meta cat">{category}</p>
+        <h3>{title}</h3>
+        <p class="desc">{description}</p>
+        {role && <p class="meta role">{role}</p>}
+        <span class="go">Read the build notes <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .project { color: inherit; }
+  .project + :global(.project) > .b,
+  .project + :global(.project) > .m { border-top: var(--hair); }
+  .project > .m, .project > .b { padding-block: var(--s6) var(--s7); }
+
+  .p-num {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: var(--s2);
+    transition: color var(--t-fast) var(--ease);
+  }
+  .project:hover .p-num { color: var(--accent); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: var(--s5);
+    align-items: start;
+  }
+
+  .media { margin: 0; }
+  .media img {
+    width: auto;
+    max-width: 100%;
+    border: var(--hair);
+    border-radius: var(--radius);
+    background: var(--bg-sunk);
+    transition: transform var(--t) var(--ease);
+  }
+  .project:hover .media img { transform: translateY(-3px); }
+  .media figcaption { min-height: 1.2rem; margin-top: 0.45rem; }
+
+  .placeholder {
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--rule-strong);
+    background: var(--bg-sunk);
+  }
+
+  .cat { margin-bottom: var(--s2); }
+  h3 {
+    font-size: var(--fs-h2);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--s3);
+    transition: color var(--t-fast) var(--ease);
+  }
+  .desc { max-width: 44ch; color: var(--ink-2); }
+  .role { margin-bottom: var(--s4); }
+
+  /* lead: largest image, big title beside it, aligned to the image's base */
+  [data-variant='lead'] .layout { align-items: end; }
+  [data-variant='lead'] .media { grid-column: 1 / 8; }
+  [data-variant='lead'] .text  { grid-column: 8 / -1; padding-bottom: 1.6rem; }
+  [data-variant='lead'] h3 { font-size: var(--fs-h1); line-height: var(--lh-tight); letter-spacing: -0.035em; }
+
+  /* left: image left, text right */
+  [data-variant='left'] .media { grid-column: 1 / 7; }
+  [data-variant='left'] .text  { grid-column: 7 / 12; padding-top: var(--s2); }
+
+  /* right: text left, image pushed to the right edge */
+  [data-variant='right'] .text  { grid-column: 1 / 5; grid-row: 1; padding-top: var(--s2); }
+  [data-variant='right'] .media { grid-column: 5 / -1; grid-row: 1; }
+  [data-variant='right'] .media img { margin-left: auto; }
+  [data-variant='right'] .media figcaption { text-align: right; }
+
+  @media (max-width: 900px) {
+    .layout > .media, .layout > .text,
+    [data-variant] .media, [data-variant] .text { grid-column: 1 / -1; grid-row: auto; }
+    [data-variant='lead'] .text { padding-bottom: 0; }
+  }
+
+  @media (max-width: 760px) {
+    .project + :global(.project) > .b { border-top: 0; }
+    .project > .m { flex-direction: row; align-items: baseline; padding-block: var(--s5) 0; }
+    .p-num { font-size: 1.125rem; margin: 0; }
+    .project > .b { padding-block: var(--s4) var(--s6); }
+    /* images run edge to edge on phones */
+    .media { margin-inline: calc(var(--gutter) * -1); }
+    .media img { width: 100%; border-inline: 0; border-radius: 0; }
+    .media figcaption { display: none; }
+    .layout { row-gap: var(--s4); }
+  }
+</style>

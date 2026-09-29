@@ -1,0 +1,29 @@
+# On the bench: things currently being worked on. Shown on the homepage.
+# status must be one of: Prototyping, Testing, Live, Ongoing, Shipped, Archived
+# href is optional (link to a project page or anywhere else).
+
+- id: graze
+  order: 1
+  title: Operation GRAZE
+  category: Robotics
+  summary: Tracked, solar-assisted rover that tows a supplement trailer between paddocks.
+  status: Prototyping
+  next: Towing and turning on low-traction ground
+  href: /projects/operation-graze
+
+- id: essaylens
+  order: 2
+  title: VCE English marking system
+  category: Software
+  summary: Exam generation and rubric-based essay marking for my VCE English students.
+  status: Live
+  next: Text Response and Framework of Ideas sections
+  href: /projects/vce-english-system
+
+- id: site
+  order: 3
+  title: wilsonc.dev
+  category: Web
+  summary: This site, rebuilt as a working notebook for projects and writing.
+  status: Ongoing
+  next: More project write-ups

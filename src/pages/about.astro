@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { PROFILE, CURRENTLY_USING, SOCIAL_LINKS } from '../consts';
+---
+
+<BaseLayout
+  title="About"
+  description="Wilson C.: mechanical engineering and biomedical science student at Monash, VCE English tutor, and builder of rovers, prints and software."
+>
+  <div class="sheet">
+    <PageHead index="04" label="About" title="About" />
+
+    <div class="row row--flush">
+      <div class="m"></div>
+      <div class="b cols">
+        <div class="prose copy">
+          <p>
+            I'm Wilson. I study mechanical engineering and biomedical science at Monash University
+            in Melbourne.
+          </p>
+          <p>
+            Outside of class I build things. On Operation GRAZE, a tracked rover that tows a supplement
+            trailer across a farm, I'm the mechanical and structures lead. My Bambu P1S has been a core
+            tool since first year. I also tutor students from Year 7 to 12, mostly VCE English, and
+            built a marking and exam system so they can get proper feedback between sessions.
+          </p>
+          <p>
+            I write about AI, education and engineering, usually because something I've seen while
+            studying or teaching doesn't sit right and I want to work out why.
+          </p>
+          <p>
+            This site is a working notebook rather than a finished portfolio. Things on it change.
+          </p>
+        </div>
+
+        <aside class="side">
+          <dl class="spec">
+            {PROFILE.map(({ label, value }) => (
+              <>
+                <dt class="meta">{label}</dt>
+                <dd>{value}</dd>
+              </>
+            ))}
+            <dt class="meta">Using</dt>
+            <dd>{CURRENTLY_USING.join(', ')}</dd>
+          </dl>
+        </aside>
+      </div>
+    </div>
+
+    <SectionHead index="04.1" label="Contact" id="contact" />
+    <div class="row">
+      <div class="m"></div>
+      <div class="b">
+        <p class="contact-lead">
+          The best way to reach me is email. If you'd like to work on a project or research together,
+          ask and I'll send my CV.
+        </p>
+        <dl class="spec contact">
+          <dt class="meta">Email</dt>
+          <dd><a href={`mailto:${SOCIAL_LINKS.email}`}>{SOCIAL_LINKS.email}</a></dd>
+          <dt class="meta">LinkedIn</dt>
+          <dd><a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">Wilson C.</a></dd>
+          <dt class="meta">GitHub</dt>
+          <dd><a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">itsjustsmilly</a></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    gap: var(--s7);
+    padding-bottom: var(--s7);
+  }
+  .copy p:last-child { margin-bottom: 0; }
+  .side { padding-top: 0.4rem; }
+  .contact-lead { font-size: var(--fs-lead); max-width: 46ch; color: var(--ink-2); }
+  .contact { max-width: 34rem; }
+
+  @media (max-width: 900px) {
+    .cols { grid-template-columns: 1fr; gap: var(--s6); }
+  }
+</style>

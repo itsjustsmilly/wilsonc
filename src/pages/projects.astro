@@ -1,63 +1,93 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import PageHead from '../components/PageHead.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProjectEntry from '../components/ProjectEntry.astro';
+import { getProjects, variantFor } from '../lib/content';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order);
+const projects = await getProjects();
 ---
 
 <BaseLayout
-  title="Projects"
-  description="A selection of engineering and maker projects — electronics, CNC machines, data tools, and more."
+  title="Work"
+  description="Machines, prototypes and software: build notes from robotics, mechanical design, 3D printing and education tools."
 >
-  <div class="container">
-    <header class="page-header">
-      <h1>Projects</h1>
-      <p class="subtitle">
-        A collection of things I've built — hardware, software, and everything in between.
-      </p>
-    </header>
+  <div class="sheet">
+    <PageHead
+      index="02"
+      label="Work"
+      title="Work"
+      lead="Machines, prototypes and software. Each entry is a build log: the constraints, what I tried, what broke, and what changed because of it."
+    >
+      <span slot="margin" class="meta">{projects.length} entries</span>
+    </PageHead>
 
-    {projects.length === 0 ? (
-      <p class="empty">No projects yet — check back soon.</p>
-    ) : (
-      <ul class="grid" role="list" aria-label="Projects">
-        {projects.map(project => (
-          <li>
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              tags={project.data.tags}
-              image={project.data.image}
-              imageAlt={project.data.imageAlt}
-              demoUrl={project.data.demoUrl}
-              repoUrl={project.data.repoUrl}
-              href={`/projects/${project.id}`}
-            />
-          </li>
-        ))}
-      </ul>
-    )}
+    <!-- Register: a compact drawing-register style index -->
+    <div class="row row--flush">
+      <div class="m"></div>
+      <div class="b">
+        <table class="register">
+          <thead>
+            <tr class="meta">
+              <th scope="col">No.</th>
+              <th scope="col">Project</th>
+              <th scope="col" class="hide-sm">Category</th>
+              <th scope="col">Year</th>
+              <th scope="col" class="hide-sm">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.map((p) => (
+              <tr>
+                <td class="meta">P.{String(p.data.number).padStart(2, '0')}</td>
+                <td><a href={`/projects/${p.id}`}>{p.data.title}</a></td>
+                <td class="meta hide-sm">{p.data.category}</td>
+                <td class="meta">{p.data.year}</td>
+                <td class="meta status hide-sm">{p.data.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <SectionHead index="02.1" label="Entries" />
+    {projects.map((p, i) => (
+      <ProjectEntry
+        href={`/projects/${p.id}`}
+        number={p.data.number}
+        year={p.data.year}
+        title={p.data.title}
+        description={p.data.description}
+        category={p.data.category}
+        status={p.data.status}
+        role={p.data.role}
+        image={p.data.image}
+        imageAlt={p.data.imageAlt}
+        variant={variantFor(i)}
+      />
+    ))}
   </div>
 </BaseLayout>
 
 <style>
-  .page-header { margin-bottom: var(--space-12); }
-  .page-header h1 { margin-bottom: var(--space-3); }
-  .subtitle {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin: 0;
-    max-width: 52ch;
+  .register {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--s7);
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--space-6);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .register th, .register td {
+    text-align: left;
+    padding: 0.7rem 1rem 0.7rem 0;
+    border-bottom: var(--hair);
+    vertical-align: baseline;
   }
-  .empty { color: var(--color-text-muted); }
+  .register thead th { font-weight: 400; border-bottom: var(--line); padding-top: 0; }
+  .register td:first-child, .register th:first-child { width: 4.5rem; }
+  .register a { color: var(--ink); font-weight: 500; transition: color var(--t-fast) var(--ease); }
+  .register tr:hover a, .register tr:hover td:first-child { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .hide-sm { display: none; }
+  }
 </style>

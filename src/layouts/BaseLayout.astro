@@ -19,25 +19,48 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
   <head>
     <BaseHead title={title} description={description} image={image} />
-    <!-- Prevent flash of wrong theme: apply stored preference before paint -->
+    <!-- Light by default; a stored choice wins. Runs before paint to avoid a flash. -->
     <script is:inline>
-      (function () {
-        const stored = localStorage.getItem('theme');
-        const dark = stored
-          ? stored === 'dark'
-          : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
-      })();
+      try {
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
     </script>
   </head>
   <body>
+    <a class="skip meta" href="#main">Skip to content</a>
     <Header />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Figure hover detail: reveal the real pixel dimensions of each image.
+      const label = (img: HTMLImageElement) => {
+        const slot = img.closest('.fig, .media')?.querySelector('.fig-dims');
+        if (slot && img.naturalWidth) slot.textContent = `${img.naturalWidth} × ${img.naturalHeight} px`;
+      };
+      document.querySelectorAll<HTMLImageElement>('.fig img, .media img').forEach((img) => {
+        if (img.complete) label(img);
+        else img.addEventListener('load', () => label(img), { once: true });
+      });
+    </script>
   </body>
 </html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: var(--gutter);
+    top: -3rem;
+    z-index: 200;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 0.5rem 0.75rem;
+  }
+  .skip:focus { top: 0.5rem; }
+  main { min-height: 60vh; }
+</style>
